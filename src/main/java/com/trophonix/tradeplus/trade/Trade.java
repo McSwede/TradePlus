@@ -20,6 +20,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -409,6 +410,19 @@ public class Trade implements Listener {
     }
   }
 
+  @EventHandler
+  public void onQuit(PlayerQuitEvent event){
+    if (!event.getPlayer().equals(player1) && !event.getPlayer().equals(player2)) return;
+    Player player = event.getPlayer().equals(player1) ? player1 : player2;
+    setCancelOnClose(player, true);
+
+    player1.openInventory(inv1);
+    player1.closeInventory();
+
+    player2.openInventory(inv2);
+    player2.closeInventory();
+  }
+  
   @EventHandler
   public void onClose(InventoryCloseEvent event) {
     Inventory closed = event.getInventory();
